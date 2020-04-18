@@ -1,0 +1,154 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "cf3bc19e2d356d01367b6d67999aa7b3",
+    "entities": [
+      {
+        "tableName": "User",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `email` TEXT NOT NULL, `doctorStatus` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fName",
+            "columnName": "first_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lName",
+            "columnName": "last_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "email",
+            "columnName": "email",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "doctorStatus",
+            "columnName": "doctorStatus",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "userId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_User_userId",
+            "unique": true,
+            "columnNames": [
+              "userId"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_User_userId` ON `${TABLE_NAME}` (`userId`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Doctor",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`doctorId` INTEGER NOT NULL, `clinic` TEXT, `regNum` INTEGER NOT NULL, PRIMARY KEY(`doctorId`))",
+        "fields": [
+          {
+            "fieldPath": "doctorId",
+            "columnName": "doctorId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clinic",
+            "columnName": "clinic",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "regNum",
+            "columnName": "regNum",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "doctorId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Consultation",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`consultID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `patId` INTEGER NOT NULL, `docId` INTEGER NOT NULL, FOREIGN KEY(`patId`) REFERENCES `User`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`docId`) REFERENCES `Doctor`(`doctorId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "consultID",
+            "columnName": "consultID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patId",
+            "columnName": "patId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "docId",
+            "columnName": "docId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "consultID"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "User",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "patId"
+            ],
+            "referencedColumns": [
+              "userId"
+            ]
+          },
+          {
+            "table": "Doctor",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "docId"
+            ],
+            "referencedColumns": [
+              "doctorId"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cf3bc19e2d356d01367b6d67999aa7b3')"
+    ]
+  }
+}
