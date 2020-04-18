@@ -10,9 +10,9 @@ import androidx.room.Index;
 import java.io.Serializable;
 
 @Entity
-        //(indices = {@Index(value = {"userId"}, unique = true)
+        (indices = {@Index(value = {"userId"}, unique = true)
 
-//})
+})
 public class User implements Serializable{
         @PrimaryKey(autoGenerate = true)
                 public long userId;
