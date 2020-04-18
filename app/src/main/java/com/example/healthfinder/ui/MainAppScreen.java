@@ -1,7 +1,8 @@
-package com.example.healthfinder;
+package com.example.healthfinder.ui;
 
 import android.os.Bundle;
 
+import com.example.healthfinder.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;

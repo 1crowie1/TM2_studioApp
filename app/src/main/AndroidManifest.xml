@@ -13,9 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainAppScreen"
+            android:name=".ui.MainAppScreen"
             android:label="@string/title_activity_main_app_screen"></activity>
-        <activity android:name=".model.MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
