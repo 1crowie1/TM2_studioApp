@@ -13,7 +13,6 @@ import java.io.Serializable;
         (indices = {@Index(value = {"userId"}, unique = true)
 
 })
-
 public class User implements Serializable{
         @PrimaryKey(autoGenerate = true)
                 public long userId;

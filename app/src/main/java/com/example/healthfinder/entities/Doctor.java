@@ -10,10 +10,10 @@ import java.io.Serializable;
 
 
 @Entity
-       /* (foreignKeys = @ForeignKey(entity = User.class,
+       (foreignKeys = @ForeignKey(entity = User.class,
         parentColumns = "userId",
         childColumns = "doctorId",
-        onDelete = 5)) //cascade*/
+        onDelete = 5)) //cascade
 public class Doctor implements Serializable{
     @PrimaryKey
         public long doctorId;

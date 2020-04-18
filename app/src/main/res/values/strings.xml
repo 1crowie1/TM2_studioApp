@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">HealthFinder</string>
-    <string name="login">Login</string>
+    <string name="getStarted">Get Started</string>
     <string name="emailHint">Enter Email</string>
     <string name="passwordHint">Enter Password</string>
+    <string name="title_activity_main_app_screen">MainAppScreen</string>
+    <string name="title_home">Profile</string>
+    <string name="title_dashboard">Consultations</string>
+    <string name="title_notifications">Request</string>
 </resources>

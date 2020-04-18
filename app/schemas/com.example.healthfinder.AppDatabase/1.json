@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "cf3bc19e2d356d01367b6d67999aa7b3",
+    "identityHash": "90d2cad2838a96a625a8c9bfe396068b",
     "entities": [
       {
         "tableName": "User",
@@ -59,7 +59,7 @@
       },
       {
         "tableName": "Doctor",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`doctorId` INTEGER NOT NULL, `clinic` TEXT, `regNum` INTEGER NOT NULL, PRIMARY KEY(`doctorId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`doctorId` INTEGER NOT NULL, `clinic` TEXT, `regNum` INTEGER NOT NULL, PRIMARY KEY(`doctorId`), FOREIGN KEY(`doctorId`) REFERENCES `User`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "doctorId",
@@ -87,7 +87,19 @@
           "autoGenerate": false
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "User",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "doctorId"
+            ],
+            "referencedColumns": [
+              "userId"
+            ]
+          }
+        ]
       },
       {
         "tableName": "Consultation",
@@ -148,7 +160,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cf3bc19e2d356d01367b6d67999aa7b3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '90d2cad2838a96a625a8c9bfe396068b')"
     ]
   }
 }
