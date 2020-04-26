@@ -1,5 +1,6 @@
 package com.example.healthfinder.DAO;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -23,7 +24,10 @@ public interface UserDao {
 
     @Transaction
     @Query("SELECT * FROM User WHERE doctorStatus")
-    List<UserAndDoctor> getUsersAndDoctors();
+    List<User> getUsersAndDoctors();
+
+    @Query("SELECT * FROM User WHERE email like :email")
+    List<User> getExistingUsers(String email);
 
     @Query("SELECT * FROM User WHERE userId = :uid")
     List<User> getUserId(final int uid);

@@ -1,9 +1,12 @@
-package com.example.healthfinder.ui;
+package com.example.healthfinder;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,22 +24,27 @@ import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends AppCompatActivity {
 
+    //tag for login error
     private static final String TAG = "";
     SignInButton signIn;
+    //Creating sign-in client
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Default google sign-in client to gather profile information for user account
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        //When sign-in button click run the signIn() method
         signIn = findViewById(R.id.getStarted);
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.getStarted:
                         signIn();
                         break;
-                    // ...
                 }
             }
         });
@@ -57,17 +64,35 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        loginExisting(account);// 2 lines check to see if user previously logged in
+        loginExisting(account); // If user previously logged in, login with their account, supersedes normal sign in
     }
 
     public void loginExisting(GoogleSignInAccount account) {
+        //Method runs once user is logged into valid account
+        //Obtains user info from google account and sends it to the main activity
+
         if (account != null) {
-            //login with existing acc
+
+            String userName = account.getDisplayName();
+            String userFirstName = account.getGivenName();
+            String userLastName = account.getFamilyName();
+            String userEmail = account.getEmail();
+            Uri userPhoto = account.getPhotoUrl();
+
+            Intent myIntent = new Intent(MainActivity.this, AppActivity.class);
+            myIntent.putExtra("userName", userName);
+            myIntent.putExtra("userFirstName", userFirstName); //Optional parameters
+            myIntent.putExtra("userLastName", userLastName);
+            myIntent.putExtra("userEmail", userEmail);
+            myIntent.setData(userPhoto);
+            MainActivity.this.startActivity(myIntent);
+
         }
     }
 
 
     private void signIn() {
+        //Runs google signIn option
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
@@ -77,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //Creates a task to handle results of google sign-in
         if(requestCode == RC_SIGN_IN){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
@@ -92,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             loginExisting(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            // Refer to the GoogleSignInStatusCodes class reference
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             loginExisting(null);
         }

@@ -7,4 +7,6 @@
     <string name="title_home">Profile</string>
     <string name="title_dashboard">Consultations</string>
     <string name="title_notifications">Request</string>
+    <string name="title_activity_main_app">MainAppActivity</string>
+    <string name="title_activity_app">AppActivity</string>
 </resources>

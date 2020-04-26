@@ -28,6 +28,9 @@ android {
     }
 
 }
+repositories {
+    google()
+}
 
 
 dependencies {

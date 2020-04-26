@@ -9,7 +9,8 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
 
-@Entity(foreignKeys = {@ForeignKey(entity = User.class,
+@Entity
+        (foreignKeys = {@ForeignKey(entity = User.class,
                                     parentColumns = "userId",
                                     childColumns = "patId",
                                     onDelete = 5), //cascade
