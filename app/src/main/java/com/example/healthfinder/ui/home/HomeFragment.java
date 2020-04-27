@@ -2,10 +2,13 @@ package com.example.healthfinder.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +27,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 public class HomeFragment extends Fragment {
 
-    TextView fullName;
+    EditText fullName;
     TextView email;
     ImageView profilePic;
     long userID;
@@ -39,7 +42,7 @@ public class HomeFragment extends Fragment {
         LayoutInflater lf = getActivity().getLayoutInflater();
 
         View view =  lf.inflate(R.layout.fragment_home, container, false);
-        fullName = (TextView) view.findViewById(R.id.nameText);
+        fullName = (EditText) view.findViewById(R.id.nameText);
         email = (TextView) view.findViewById(R.id.emailText);
         profilePic = (ImageView) view.findViewById(R.id.profileImage);
 
@@ -48,6 +51,22 @@ public class HomeFragment extends Fragment {
         AppActivity activity = (AppActivity) getActivity();
         userID = activity.getCurrentUserID();
 
+        fullName.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String temp = s.toString();
+                temp.trim();
+                String userFirstName = temp.substring(0, temp.indexOf(' '));
+                String userLastName = temp.substring(temp.indexOf(' ') + 1);
+                updateName(userFirstName, userLastName);
+            }
+        });
 
         return view;
     }
@@ -63,11 +82,14 @@ public class HomeFragment extends Fragment {
 
         email.setText(activity.getCurrentEmail(userID));
 
-
-
     }
 
+    public void updateName(String userFirstName, String userLastName){
+        AppActivity activity = (AppActivity) getActivity();
+        activity.setCurrentFirstName(getUserID(), userFirstName);
+        activity.setCurrentLastName(getUserID(), userLastName);
+    }
 
-
+    public long getUserID(){return userID;}
 
 }

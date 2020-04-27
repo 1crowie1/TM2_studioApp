@@ -3,6 +3,7 @@ package com.example.healthfinder;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.healthfinder.entities.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,14 +12,12 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.util.List;
+
 public class AppActivity extends AppCompatActivity {
 
     private Long userID;
     private AppDatabase AppDb;
-    private String userFirstName;
-    private String userLastName;
-    private String userEmail;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +42,6 @@ public class AppActivity extends AppCompatActivity {
     }
 
 
-    /*@Override
-    protected void onStart() {
-        super.onStart();
-
-        Bundle bundle = new Bundle();
-        bundle.putLong("userID", userID);
-// set Fragmentclass Arguments
-        HomeFragment fragobj = new HomeFragment();
-        fragobj.setArguments(bundle);
-    }*/
-
     public long getCurrentUserID(){
         return userID;
     }
@@ -68,5 +56,23 @@ public class AppActivity extends AppCompatActivity {
 
     public String getCurrentEmail(long currentUserID){
         return AppDb.userDao().getemailByID(currentUserID);
+    }
+
+    public void setCurrentFirstName(final long userID, final String userFirstName){
+        AppExecutors.getInstance().diskIO().execute(new Runnable(){
+            @Override
+            public void run(){
+                AppDb.userDao().updateLastName(userID, userFirstName);
+            }
+        });
+    }
+
+    public void setCurrentLastName(final long userID, final String userLastName){
+        AppExecutors.getInstance().diskIO().execute(new Runnable(){
+            @Override
+            public void run(){
+                AppDb.userDao().updateLastName(userID, userLastName);
+            }
+        });
     }
 }

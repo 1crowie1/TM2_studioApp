@@ -39,13 +39,16 @@ public interface UserDao {
     long getUserIdByEmail(String email);
 
     @Query("SELECT * FROM User WHERE userId = :uid")
-    List<User> getUserId(final int uid);
+    User getUserById(long uid);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(User user);
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    void update(User user);
+    @Query("UPDATE User SET first_name=:userFirstName WHERE userId = :uID")
+    void updateFirstName(String userFirstName, long uID);
+
+    @Query("UPDATE User SET last_name=:userLastName WHERE userId = :uID")
+    void updateLastName(long uID, String userLastName);
 
     @Delete
     void delete(User user);
