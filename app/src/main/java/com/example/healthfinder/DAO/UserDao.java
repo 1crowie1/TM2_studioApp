@@ -16,8 +16,14 @@ import java.util.List;
 
 @Dao
 public interface UserDao {
-    @Query("SELECT * FROM User WHERE first_name LIKE :fName AND last_name LIKE :lName")
-    List<User> getUserName(String fName, String lName);
+    @Query("SELECT first_name FROM User WHERE userId LIKE :uid")
+    String getfNameByID(long uid);
+
+    @Query("SELECT last_name FROM User WHERE userId LIKE :uid")
+    String getlNameByID(long uid);
+
+    @Query("SELECT email FROM User WHERE userId LIKE :uid")
+    String getemailByID(long uid);
 
     @Query("SELECT * FROM User")
     List<User> getAllUsers();
@@ -28,6 +34,9 @@ public interface UserDao {
 
     @Query("SELECT * FROM User WHERE email like :email")
     List<User> getExistingUsers(String email);
+
+    @Query("SELECT userId FROM User Where email like :email")
+    long getUserIdByEmail(String email);
 
     @Query("SELECT * FROM User WHERE userId = :uid")
     List<User> getUserId(final int uid);

@@ -8,10 +8,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.healthfinder.R;
+import com.example.healthfinder.entities.User;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -20,9 +22,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
+import java.util.concurrent.Callable;
+
+public class MainActivity extends AppCompatActivity{
 
     //tag for login error
     private static final String TAG = "";
@@ -31,11 +37,13 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 1;
 
+    private AppDatabase AppDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
 
         //Default google sign-in client to gather profile information for user account
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -43,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        AppDb = AppDatabase.getInstance(getApplicationContext());
 
         //When sign-in button click run the signIn() method
         signIn = findViewById(R.id.getStarted);
@@ -73,23 +83,50 @@ public class MainActivity extends AppCompatActivity {
 
         if (account != null) {
 
-            String userName = account.getDisplayName();
+            //String userName = account.getDisplayName();
             String userFirstName = account.getGivenName();
             String userLastName = account.getFamilyName();
             String userEmail = account.getEmail();
-            Uri userPhoto = account.getPhotoUrl();
+            //Uri userPhoto = account.getPhotoUrl();
 
-            Intent myIntent = new Intent(MainActivity.this, AppActivity.class);
-            myIntent.putExtra("userName", userName);
-            myIntent.putExtra("userFirstName", userFirstName); //Optional parameters
-            myIntent.putExtra("userLastName", userLastName);
-            myIntent.putExtra("userEmail", userEmail);
-            myIntent.setData(userPhoto);
-            MainActivity.this.startActivity(myIntent);
+
+            addNewUser(userFirstName, userLastName, userEmail);
+
+            runMain(userEmail);
 
         }
     }
 
+
+    public void addNewUser(final String userFirstName, final String userLastName, final String userEmail){
+        //AppExecutor to run database population on background thread
+        AppExecutors.getInstance().diskIO().execute(new Runnable(){
+            @Override
+            public void run(){
+                //check if user exists by searching database for existing email
+                List<User> users = AppDb.userDao().getExistingUsers(userEmail);
+                if(users.size() == 0){ //if user is new, add them to database
+                    User user = new User(userFirstName, userLastName, userEmail);
+                    AppDb.userDao().insert(user);
+                    runMain(userEmail);
+
+                }
+            }
+        });
+
+    }
+
+    public long getUserID(String userEmail){
+        long temp = AppDb.userDao().getUserIdByEmail(userEmail);
+        return temp;
+    }
+
+    public void runMain(String userEmail){
+        Intent myIntent = new Intent(MainActivity.this, AppActivity.class);
+        myIntent.putExtra("userID", getUserID(userEmail));
+
+        MainActivity.this.startActivity(myIntent);
+    }
 
     private void signIn() {
         //Runs google signIn option
@@ -123,4 +160,7 @@ public class MainActivity extends AppCompatActivity {
             loginExisting(null);
         }
     }
+
+
+
 }

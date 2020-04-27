@@ -14,69 +14,51 @@
         android:contentDescription="@string/title_home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.406"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.129"
+        app:layout_constraintVertical_bias="0.131"
         tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/nameText"
-        android:layout_width="127dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="140dp"
-        android:layout_marginLeft="140dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="124dp"
+        android:layout_marginLeft="124dp"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/montserrat"
+        android:gravity="center"
+        android:includeFontPadding="false"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#000000"
         android:textSize="24sp"
         android:typeface="normal"
-        android:gravity="center"
-        android:includeFontPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileImage"
-        app:layout_constraintVertical_bias="0.027" />
+        app:layout_constraintVertical_bias="0.023" />
 
-    <TextView
+    <EditText
         android:id="@+id/emailText"
-        android:layout_width="88dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginLeft="96dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="92dp"
+        android:layout_marginLeft="92dp"
         android:fontFamily="@font/montserrat"
         android:gravity="center"
         android:includeFontPadding="false"
-        android:text="TextView"
+        android:text="EditText"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#000000"
         android:textSize="16sp"
         android:typeface="normal"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.463" />
-
-    <TextView
-        android:id="@+id/phoneText"
-        android:layout_width="88dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginLeft="96dp"
-        android:fontFamily="@font/montserrat"
-        android:gravity="center"
-        android:includeFontPadding="false"
-        android:text="TextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:typeface="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.584" />
+        app:layout_constraintVertical_bias="0.473" />
 
     <ImageView
         android:id="@+id/emailIcon"
@@ -93,20 +75,5 @@
         app:srcCompat="@android:drawable/sym_action_email"
         tools:ignore="ContentDescription"
         tools:srcCompat="@android:drawable/ic_dialog_email" />
-
-    <ImageView
-        android:id="@+id/phoneIcon"
-        android:layout_width="44dp"
-        android:layout_height="31dp"
-        android:background="#03A9F4"
-        android:src="@drawable/common_full_open_on_phone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.103"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.582"
-        app:srcCompat="@android:drawable/stat_sys_phone_call"
-        tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

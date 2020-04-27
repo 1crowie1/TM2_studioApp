@@ -9,4 +9,5 @@
     <string name="title_notifications">Request</string>
     <string name="title_activity_main_app">MainAppActivity</string>
     <string name="title_activity_app">AppActivity</string>
+    <string name="sign_out_button">Sign Out</string>
 </resources>
