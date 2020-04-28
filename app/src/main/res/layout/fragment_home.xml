@@ -9,40 +9,40 @@
 
     <ImageView
         android:id="@+id/profileImage"
-        android:layout_width="124dp"
-        android:layout_height="114dp"
+        android:layout_width="158dp"
+        android:layout_height="157dp"
         android:contentDescription="@string/title_home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.025"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@android:drawable/ic_menu_edit"
         tools:src="@tools:sample/avatars" />
 
-    <EditText
+    <TextView
         android:id="@+id/nameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:autofillHints=""
         android:background="@android:color/transparent"
         android:contentDescription="@string/nameHint"
         android:fontFamily="@font/montserrat"
         android:gravity="center"
         android:includeFontPadding="false"
-        android:inputType="textPersonName"
+        android:inputType="none"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#000000"
         android:textSize="24sp"
         android:typeface="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/profileImage"
-        app:layout_constraintStart_toStartOf="@+id/profileImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileImage"
-        app:layout_constraintVertical_bias="0.021" />
+        app:layout_constraintVertical_bias="0.041" />
 
     <TextView
         android:id="@+id/emailText"
@@ -62,7 +62,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/emailIcon"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.41" />
+        app:layout_constraintVertical_bias="0.426" />
 
     <ImageView
         android:id="@+id/emailIcon"
@@ -75,7 +75,7 @@
         app:layout_constraintHorizontal_bias="0.079"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.401"
+        app:layout_constraintVertical_bias="0.417"
         app:srcCompat="@android:drawable/sym_action_email"
         tools:ignore="ContentDescription"
         tools:srcCompat="@android:drawable/ic_dialog_email" />
@@ -84,11 +84,23 @@
         android:id="@+id/registerButton"
         android:layout_width="95dp"
         android:layout_height="53dp"
-        android:layout_marginTop="244dp"
         android:text="@string/doctorRegistration"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameText" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.861" />
+
+    <Button
+        android:id="@+id/signOutButton"
+        android:layout_width="66dp"
+        android:layout_height="52dp"
+        android:text="@string/sign_out_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.953"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.86" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "997195462465",
+    "firebase_url": "https://healthfinder-1587179943291.firebaseio.com",
+    "project_id": "healthfinder-1587179943291",
+    "storage_bucket": "healthfinder-1587179943291.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997195462465:android:9767533c30082c910993c0",
+        "android_client_info": {
+          "package_name": "com.example.healthfinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997195462465-qjvnlmgeoi3cnjqvgtkjpf9dttm83ksc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.healthfinder",
+            "certificate_hash": "e23775443a66203f0651b164e007b90f99d978bf"
+          }
+        },
+        {
+          "client_id": "997195462465-okp31ia48p1c3dnlkfd33tmbqottlkgp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq7m4DABK_YjI9vXjZGCOiw7mK-ZG0NZY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997195462465-okp31ia48p1c3dnlkfd33tmbqottlkgp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

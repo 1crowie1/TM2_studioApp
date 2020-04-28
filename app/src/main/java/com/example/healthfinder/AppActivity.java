@@ -1,10 +1,13 @@
 package com.example.healthfinder;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.healthfinder.entities.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -16,8 +19,6 @@ import java.util.List;
 
 public class AppActivity extends AppCompatActivity {
 
-    private Long userID;
-    private AppDatabase AppDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,46 +34,17 @@ public class AppActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        AppDb = AppDatabase.getInstance(getApplicationContext());
-
         Intent intent = getIntent();
 
-        userID = intent.getLongExtra("userID", 0);
 
     }
 
-
-    public long getCurrentUserID(){
-        return userID;
+    public void signOut(){
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_CANCELED, returnIntent);
+        finish();
     }
 
-    public String getCurrentFirstName(long currentUserID){
-        return AppDb.userDao().getfNameByID(currentUserID);
-    }
 
-    public String getCurrentLastName(long currentUserID){
-        return AppDb.userDao().getlNameByID(currentUserID);
-    }
 
-    public String getCurrentEmail(long currentUserID){
-        return AppDb.userDao().getemailByID(currentUserID);
-    }
-
-    public void setCurrentFirstName(final long userID, final String userFirstName){
-        AppExecutors.getInstance().diskIO().execute(new Runnable(){
-            @Override
-            public void run(){
-                AppDb.userDao().updateLastName(userID, userFirstName);
-            }
-        });
-    }
-
-    public void setCurrentLastName(final long userID, final String userLastName){
-        AppExecutors.getInstance().diskIO().execute(new Runnable(){
-            @Override
-            public void run(){
-                AppDb.userDao().updateLastName(userID, userLastName);
-            }
-        });
-    }
 }

@@ -16,14 +16,13 @@ import com.example.healthfinder.R;
 
 public class DashboardFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        LayoutInflater lf = getActivity().getLayoutInflater();
+        View view =  lf.inflate(R.layout.fragment_dashboard, container, false);
 
-        return root;
+        return view;
     }
 }
