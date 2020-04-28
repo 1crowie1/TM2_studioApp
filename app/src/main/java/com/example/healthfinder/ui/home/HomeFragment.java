@@ -51,20 +51,27 @@ public class HomeFragment extends Fragment {
         AppActivity activity = (AppActivity) getActivity();
         userID = activity.getCurrentUserID();
 
+        //Listener to update name in database upon change
         fullName.addTextChangedListener(new TextWatcher() {
 
-            public void afterTextChanged(Editable s) {
-            }
+            public void afterTextChanged(Editable s) {}
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String temp = s.toString();
                 temp.trim();
-                String userFirstName = temp.substring(0, temp.indexOf(' '));
-                String userLastName = temp.substring(temp.indexOf(' ') + 1);
-                updateName(userFirstName, userLastName);
+                String userFirstName = temp;
+                String userLastName = "";
+                try {
+                    userFirstName = temp.substring(0, temp.indexOf(' '));
+                    userLastName = temp.substring(temp.indexOf(' ') + 1);
+                }
+                catch(Exception nameSpaces){}
+                finally {
+                    updateName(userFirstName, userLastName);
+                }
+
             }
         });
 
@@ -77,6 +84,7 @@ public class HomeFragment extends Fragment {
 
         AppActivity activity = (AppActivity) getActivity();
 
+        //set display fields to information of current user
         String temp = activity.getCurrentFirstName(userID) + " " + activity.getCurrentLastName(userID);
         fullName.setText(temp);
 
@@ -85,11 +93,12 @@ public class HomeFragment extends Fragment {
     }
 
     public void updateName(String userFirstName, String userLastName){
+        //update user initiated name change in database
         AppActivity activity = (AppActivity) getActivity();
         activity.setCurrentFirstName(getUserID(), userFirstName);
         activity.setCurrentLastName(getUserID(), userLastName);
     }
-
+    //curr
     public long getUserID(){return userID;}
 
 }

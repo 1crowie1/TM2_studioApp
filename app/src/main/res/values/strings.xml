@@ -10,4 +10,6 @@
     <string name="title_activity_main_app">MainAppActivity</string>
     <string name="title_activity_app">AppActivity</string>
     <string name="sign_out_button">Sign Out</string>
+    <string name="nameHint">Change Name</string>>
+    <string name="doctorRegistration">I\'m a Doctor</string>>
 </resources>
