@@ -12,4 +12,6 @@
     <string name="sign_out_button">Sign Out</string>
     <string name="nameHint">Change Name</string>
     <string name="doctorRegistration">I\'m a Doctor</string>
+    <string name="reg">Reg No:</string>
+    <string name="qual">Qualifications</string>
 </resources>

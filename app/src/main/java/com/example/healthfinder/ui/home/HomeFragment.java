@@ -27,10 +27,13 @@ import com.bumptech.glide.Glide;
 import com.example.healthfinder.AppActivity;
 import com.example.healthfinder.MainActivity;
 import com.example.healthfinder.R;
+import com.example.healthfinder.entities.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.net.URL;
@@ -47,7 +50,7 @@ public class HomeFragment extends Fragment {
     private String emailAd;
     private Uri photoUrl;
 
-
+    private DatabaseReference mDatabase;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class HomeFragment extends Fragment {
         fullName = (TextView) view.findViewById(R.id.nameText);
         email = (TextView) view.findViewById(R.id.emailText);
        profilePic = (ImageView) view.findViewById(R.id.profileImage);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         AppActivity activity = (AppActivity) getActivity();
 
@@ -72,7 +76,7 @@ public class HomeFragment extends Fragment {
             emailAd = user.getEmail();
             photoUrl = user.getPhotoUrl();
         }
-
+        writeNewUser(user.getUid(), name, emailAd);
         fullName.setText(name);
         email.setText(emailAd);
 
@@ -92,6 +96,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+
         return view;
     }
 
@@ -106,6 +112,13 @@ public class HomeFragment extends Fragment {
 
 
     }
+
+    private void writeNewUser(String userId, String name, String email) {
+        User user = new User(name, email);
+
+        mDatabase.child("users").child(userId).setValue(user);
+    }
+
 
 
 
