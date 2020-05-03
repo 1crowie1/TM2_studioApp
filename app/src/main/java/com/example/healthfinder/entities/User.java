@@ -15,6 +15,7 @@ public class User {
         this.doctorStatus = false;
     }
 
+
     public String getUsername() {
         return username;
     }

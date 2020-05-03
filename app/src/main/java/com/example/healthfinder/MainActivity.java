@@ -30,6 +30,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -50,17 +51,20 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         Intent intent = getIntent();
 
+        //Instance of Firebase Authorization Tool
         mAuth = FirebaseAuth.getInstance();
 
+        //New google sign in option
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
+        //New google sign in client
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        //Listener to handle sign-in
         signIn = findViewById(R.id.sign_in_button);
-
         signIn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -77,14 +81,14 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onStart() {
         super.onStart();
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//        loginExisting(account);
+        //Login with user if they were previously signed in
         FirebaseUser currentUser = mAuth.getCurrentUser();
         loginExisting(currentUser);
     }
 
     public void loginExisting(FirebaseUser account) {
 
+        //If valid google account passed, launch AppActivity
         if(account != null){
             Intent myIntent = new Intent(this, AppActivity.class);
             startActivityForResult(myIntent, LAUNCH_SECOND_ACTIVITY);
@@ -92,6 +96,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void signIn(){
+        //show prompt to sign-in from google
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -113,6 +118,8 @@ public class MainActivity extends AppCompatActivity{
             }
         }
 
+        //launches if a user attempted to sign-out in AppActivity
+        //Signs them out of google account
         if (requestCode == LAUNCH_SECOND_ACTIVITY) {
             if (resultCode == Activity.RESULT_CANCELED) {
                 currentSignOut();
@@ -144,6 +151,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void currentSignOut(){
+        //sign out of current account
         FirebaseAuth.getInstance().signOut();
     }
 
