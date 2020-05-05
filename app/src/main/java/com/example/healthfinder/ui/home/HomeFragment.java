@@ -64,6 +64,7 @@ public class HomeFragment extends Fragment {
     private TextView regPrint;
     private TextView regValue;
     private TextView clinicValue;
+    private Button resetButton;
 
     //variables for displaying information on user page
     private String uid;
@@ -116,6 +117,7 @@ public class HomeFragment extends Fragment {
             photoUrl = user.getPhotoUrl();
         }
 
+
         //Check if the user is already in database. If not add them to it
         checkIfUserExists(uid);
 
@@ -149,7 +151,25 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        resetButton = view.findViewById(R.id.resetButton);
+        resetButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.resetButton:
+                        reset();
+                        break;
+                }
+            }
+        });
+
+
         return view;
+    }
+
+    private void reset(){
+        mUser.child(uid).child("doctorStatus").setValue(false);
+        mDoctor.child(uid).removeValue();
     }
 
     private void currentSignOut(){
@@ -162,11 +182,16 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
         //Hide doctor information by default
-        regPrint.setVisibility(View.INVISIBLE);
-        regValue.setVisibility(View.INVISIBLE);
-        clinicPrint.setVisibility(View.INVISIBLE);
-        clinicValue.setVisibility(View.INVISIBLE);
-        docButton.setVisibility(View.VISIBLE);
+          if (reg == null) {
+            regPrint.setVisibility(View.INVISIBLE);
+            regValue.setVisibility(View.INVISIBLE);
+            clinicPrint.setVisibility(View.INVISIBLE);
+            clinicValue.setVisibility(View.INVISIBLE);
+            docButton.setVisibility(View.VISIBLE);
+        }else{
+            setRegClinic(reg, clinic);
+            updateDoctorUI();
+        }
 
     }
 
@@ -181,6 +206,7 @@ public class HomeFragment extends Fragment {
         Doctor doctor = new Doctor(reg, clinic);
         mDatabase.child("doctors").child(userId).setValue(doctor);
         mUser.child(userId).child("doctorStatus").setValue(true);
+        updateDoctorUI();
     }
 
     private void checkIfUserExists(String uid){
@@ -188,7 +214,6 @@ public class HomeFragment extends Fragment {
         //Listener takes a snapshot of live data from the database
         final String temp = uid;
         //Below comment used for testing
-        //mUser.child(uid).child("doctorStatus").setValue(false);
         mUser.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -254,7 +279,7 @@ public class HomeFragment extends Fragment {
                 reg = data.getStringExtra("reg");
                 clinic = data.getStringExtra("clinic");
                 writeNewDoctor(uid, reg, clinic);
-                updateDoctorUI();
+
             }
             if (resultCode == Activity.RESULT_CANCELED) {}
         }
