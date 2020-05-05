@@ -57,7 +57,7 @@ public class HomeFragment extends Fragment {
     private TextView fullName;
     private TextView email;
     private ImageView profilePic;
-    FirebaseUser user;
+    private FirebaseUser user;
     private Button signOutButton;
     private Button docButton;
     private TextView clinicPrint;
@@ -187,10 +187,13 @@ public class HomeFragment extends Fragment {
         //Method to check if user is already in database
         //Listener takes a snapshot of live data from the database
         final String temp = uid;
+        //Below comment used for testing
+        //mUser.child(uid).child("doctorStatus").setValue(false);
         mUser.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){ //if user already exists
+
                     User user = dataSnapshot.getValue(User.class);
                     Boolean status = user.doctorStatus; //check if they are a doctor and grab info
                     if (status){
@@ -202,10 +205,7 @@ public class HomeFragment extends Fragment {
                 }
             }
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+            public void onCancelled(@NonNull DatabaseError databaseError) {}});
 
     }
 

@@ -17,6 +17,11 @@
     <string name="clinic">Clinic:</string>
     <string name="title_activity_doc_input">DocInputActivity</string>
     <string name="register">Register</string>
+    <string name="consultTitle">Consultation Form</string>
+    <string name="doctorName">Doctor Name:</string>
+    <string name="caseUrgent">Case is urgent:</string>
+    <string name="details">Details</string>
+    <string name="Submit">Submit</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
