@@ -164,8 +164,10 @@
 
     <Button
         android:id="@+id/docButton"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="95dp"
         android:layout_height="53dp"
+        android:ellipsize="none"
         android:text="@string/doctorRegistration"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
