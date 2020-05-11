@@ -12,14 +12,6 @@ public class Doctor {
         this.clinic = clinic;
     }
 
-    public String getClinic() {
-        return clinic;
-    }
-
-    public String getRegNo(){
-        return regNo;
-    }
-
 }
 
 

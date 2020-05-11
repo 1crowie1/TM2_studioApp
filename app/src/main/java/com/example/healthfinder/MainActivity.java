@@ -153,6 +153,8 @@ public class MainActivity extends AppCompatActivity{
     private void currentSignOut(){
         //sign out of current account
         FirebaseAuth.getInstance().signOut();
+        mGoogleSignInClient.signOut();
+        signIn();
     }
 
 

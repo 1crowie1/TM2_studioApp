@@ -19,7 +19,7 @@
     <string name="title_activity_doc_input">DocInputActivity</string>
     <string name="register">Register</string>
     <string name="consultTitle">Consultation Form</string>
-    <string name="doctorName">Doctor Name:</string>
+    <string name="doctorEmail">Doctor Email:</string>
     <string name="caseUrgent">Case is urgent:</string>
     <string name="details">Details</string>
     <string name="Submit">Submit</string>
