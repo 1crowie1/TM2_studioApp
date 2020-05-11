@@ -12,6 +12,7 @@
     <string name="sign_out_button">Sign Out</string>
     <string name="nameHint">Change Name</string>
     <string name="doctorRegistration">I\'m a Doctor</string>
+    <string name="registrationTitle">Doctor Registration</string>
     <string name="reg">Reg No:</string>
     <string name="qual">Qualifications</string>
     <string name="clinic">Clinic:</string>
@@ -22,6 +23,7 @@
     <string name="caseUrgent">Case is urgent:</string>
     <string name="details">Details</string>
     <string name="Submit">Submit</string>
+    <string name="Welcome">Welcome to HealthFinder</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
