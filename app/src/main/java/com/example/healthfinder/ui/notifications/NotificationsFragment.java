@@ -3,6 +3,7 @@ package com.example.healthfinder.ui.notifications;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.room.Database;
+
 
 import com.example.healthfinder.AppActivity;
 import com.example.healthfinder.R;
@@ -141,9 +142,13 @@ public class NotificationsFragment extends Fragment {
     private void checkConsultation(final String docEmail, final String details, final boolean urgency){
         mUser.orderByChild("email").equalTo(docEmail).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot){
                 if (dataSnapshot.exists()) {
-                    writeNewConsultation(docEmail, details, urgency);
+                    String tempId = "";
+                    for(DataSnapshot child : dataSnapshot.getChildren()){
+                        tempId = child.getKey();
+                    }
+                    writeNewConsultation(docEmail, details, urgency, tempId);
                 } else{
                     Toast.makeText(getActivity(), "Invalid recipient", Toast.LENGTH_SHORT).show();
                 }
@@ -157,7 +162,11 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    writeNewPrescription(patEmail, details);
+                    String tempId = ""; //string
+                    for(DataSnapshot child : dataSnapshot.getChildren()){
+                        tempId = child.getKey();
+                    }
+                    writeNewPrescription(patEmail, details, tempId);
                 }else{
                     Toast.makeText(getActivity(), "Invalid recipient", Toast.LENGTH_SHORT).show();
                 }
@@ -166,15 +175,15 @@ public class NotificationsFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {}});
     }
 
-    private void writeNewConsultation(String docEmail, String details, boolean urgency){
-        Consultation consultation = new Consultation(user.getEmail(), docEmail, details, urgency);
+    private void writeNewConsultation(String docEmail, String details, boolean urgency, String docId){
+        Consultation consultation = new Consultation(user.getEmail(), docEmail, details, urgency, docId);
         mDatabase.child("consultations").child(uid).setValue(consultation);
         sendConsultation(docEmail, details, urgency);
     }
 
-    private void writeNewPrescription(String patEmail, String details){
+    private void writeNewPrescription(String patEmail, String details, String patId){
         Prescription prescription = new Prescription(user.getEmail(), patEmail, details);
-        mDatabase.child("prescriptions").child(uid).setValue(prescription);
+        mDatabase.child("prescriptions").child(patId).setValue(prescription);
         sendPrescription(patEmail, details);
     }
 
