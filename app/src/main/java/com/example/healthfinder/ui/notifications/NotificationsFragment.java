@@ -162,7 +162,7 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    String tempId = "";
+                    String tempId = ""; //string
                     for(DataSnapshot child : dataSnapshot.getChildren()){
                         tempId = child.getKey();
                     }
