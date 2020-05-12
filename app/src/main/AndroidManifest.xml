@@ -7,7 +7,7 @@
     <application
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
-        android:icon="@drawable/applogo_android"
+        android:icon="@drawable/applogo"
         android:label="@string/app_name"
         android:roundIcon="@drawable/applogo_android"
         android:supportsRtl="true"
