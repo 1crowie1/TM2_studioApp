@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,10 +23,12 @@ public class DocDialog extends AppCompatActivity {
 
     private TextView regText;
     private TextView clinicText;
+    private EditText specialText;
     private Button register;
 
     private String reg;
     private String clinic;
+    private String specialties;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +38,14 @@ public class DocDialog extends AppCompatActivity {
         //XML elements
         regText = (TextView) findViewById(R.id.regEdit);
         clinicText = (TextView) findViewById(R.id.clinicEdit);
+        specialText = (EditText) findViewById(R.id.specialEdit);
         register = (Button) findViewById(R.id.register);
 
         //Instantiate fields
         reg = "";
         clinic = "";
+        specialties = "";
+
         //Add ontextchange listeners to text fields
         checkText();
 
@@ -83,18 +89,32 @@ public class DocDialog extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {}
         });
+
+        specialText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                specialties = s.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     private void grabData(){
         //If either text field is blank, user gets an error popup
-        if(reg == "" || clinic == ""){
+        if(reg == "" || clinic == "" || specialties == ""){
             Snackbar.make(findViewById(android.R.id.content).getRootView(),
-                    "Clinic and Registration Required",
+                    "All fields are required",
                     Snackbar.LENGTH_SHORT).show();
         }else { // if both fields are filled out, data is stored and sent back to home fragment
             Intent returnIntent = new Intent();
             returnIntent.putExtra("reg", reg);
             returnIntent.putExtra("clinic", clinic);
+            returnIntent.putExtra("specialties", specialties);
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }

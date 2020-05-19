@@ -1,7 +1,6 @@
 package com.example.healthfinder.ui.home;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
 import android.net.Uri;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,6 +49,8 @@ public class HomeFragment extends Fragment {
     private TextView regValue;
     private TextView clinicValue;
     private Button resetButton;
+    private EditText specialtiesValue;
+    private TextView specialtiesText;
 
     //variables for displaying information on user page
     private String uid;
@@ -58,6 +60,7 @@ public class HomeFragment extends Fragment {
     //doctor specific variables
     private String reg;
     private String clinic;
+    private String specialties;
     //arbitrary launch code for creating popup window
     final static int LAUNCH = 1;
     //Database references
@@ -76,10 +79,11 @@ public class HomeFragment extends Fragment {
         email = (TextView) view.findViewById(R.id.emailText);
         profilePic = (ImageView) view.findViewById(R.id.profileImage);
         clinicPrint = (TextView) view.findViewById(R.id.clinText);
-        clinicValue = (TextView) view.findViewById(R.id.clinicText);
+        clinicValue = (TextView) view.findViewById(R.id.specialText);
         regPrint = (TextView) view.findViewById(R.id.regText);
         regValue = (TextView) view.findViewById(R.id.regNumberText);
-
+        specialtiesValue = (EditText) view.findViewById(R.id.specialtiesValue);
+        specialtiesText = (TextView) view.findViewById(R.id.specialHomeText);
         //Instantiate database references
         //Makes querying/reading data easier
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -158,9 +162,11 @@ public class HomeFragment extends Fragment {
             regValue.setVisibility(View.INVISIBLE);
             clinicPrint.setVisibility(View.INVISIBLE);
             clinicValue.setVisibility(View.INVISIBLE);
+            specialtiesText.setVisibility(View.INVISIBLE);
+            specialtiesValue.setVisibility(View.INVISIBLE);
             docButton.setVisibility(View.VISIBLE);
         }else{
-            setRegClinic(reg, clinic);
+            setRegClinicSpecialties(reg, clinic, specialties);
             updateDoctorUI();
         }
 
@@ -172,9 +178,9 @@ public class HomeFragment extends Fragment {
         mDatabase.child("users").child(userId).setValue(user);
     }
 
-    private void writeNewDoctor(String userId, String reg, String clinic){
+    private void writeNewDoctor(String userId, String reg, String clinic, String specialties){
         //Creates a doctor in the database according to doctor entity constructor
-        Doctor doctor = new Doctor(reg, clinic);
+        Doctor doctor = new Doctor(reg, clinic, specialties);
         mDatabase.child("doctors").child(userId).setValue(doctor);
         mUser.child(userId).child("doctorStatus").setValue(true);
         updateDoctorUI();
@@ -193,7 +199,7 @@ public class HomeFragment extends Fragment {
                     User user = dataSnapshot.getValue(User.class);
                     Boolean status = user.doctorStatus; //check if they are a doctor and grab info
                     if (status){
-                        readRegClinic(temp);
+                        readRegClinicSpecialties(temp);
                         updateDoctorUI(); // if they are a doctor update UI with info
                     }
                 }else{
@@ -205,7 +211,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void readRegClinic(String uid){
+    private void readRegClinicSpecialties(String uid){
         //Listener to grab current doctor registration and clinic
         mDoctor.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -213,20 +219,23 @@ public class HomeFragment extends Fragment {
                 Doctor doctor = dataSnapshot.getValue(Doctor.class);
                 String tempReg = doctor.regNo;
                 String tempClinic = doctor.clinic;
-                setRegClinic(tempReg, tempClinic);
+                String tempSpecialties = doctor.specialties;
+                setRegClinicSpecialties(tempReg, tempClinic, tempSpecialties);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}});
     }
 
-    private void setRegClinic(String reg, String clinic){
+    private void setRegClinicSpecialties(String reg, String clinic, String specialties){
         //Setter method for reg and clinic after reading them live
         //Live data is read asynchronous to main thread
         //Setter ensures UI is updated before method ends
         this.reg = reg;
         this.clinic = clinic;
+        this.specialties = specialties;
         regValue.setText(reg);
         clinicValue.setText(clinic);
+        specialtiesValue.setText(specialties);
     }
 
     private void updateDoctorUI(){
@@ -237,6 +246,8 @@ public class HomeFragment extends Fragment {
         regValue.setVisibility(View.VISIBLE);
         clinicPrint.setVisibility(View.VISIBLE);
         clinicValue.setVisibility(View.VISIBLE);
+        specialtiesText.setVisibility(View.VISIBLE);
+        specialtiesValue.setVisibility(View.VISIBLE);
         docButton.setVisibility(View.INVISIBLE);
 
     }
@@ -249,7 +260,8 @@ public class HomeFragment extends Fragment {
             if(resultCode == Activity.RESULT_OK){
                 reg = data.getStringExtra("reg");
                 clinic = data.getStringExtra("clinic");
-                writeNewDoctor(uid, reg, clinic);
+                specialties = data.getStringExtra("specialties");
+                writeNewDoctor(uid, reg, clinic, specialties);
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {}
