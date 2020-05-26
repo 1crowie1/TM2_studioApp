@@ -27,6 +27,7 @@
     <string name="Welcome">Welcome to HealthFinder</string>
     <string name="specialties">Specialties</string>
     <string name="specialties_">Specialties:</string>
+    <string name="currentConsultTitle">Current Consultation</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>

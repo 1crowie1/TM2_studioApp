@@ -1,9 +1,7 @@
 package com.example.healthfinder.ui.notifications;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,19 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 
-import com.example.healthfinder.AppActivity;
 import com.example.healthfinder.R;
 import com.example.healthfinder.entities.Consultation;
-import com.example.healthfinder.entities.Doctor;
 import com.example.healthfinder.entities.Prescription;
-import com.example.healthfinder.entities.User;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,8 +25,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Calendar;
 
 public class NotificationsFragment extends Fragment {
 
@@ -148,7 +137,9 @@ public class NotificationsFragment extends Fragment {
                     for(DataSnapshot child : dataSnapshot.getChildren()){
                         tempId = child.getKey();
                     }
+
                     writeNewConsultation(docEmail, details, urgency, tempId);
+
                 } else{
                     Toast.makeText(getActivity(), "Invalid recipient", Toast.LENGTH_SHORT).show();
                 }
@@ -174,6 +165,7 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}});
     }
+
 
     private void writeNewConsultation(String docEmail, String details, boolean urgency, String docId){
         Consultation consultation = new Consultation(user.getEmail(), docEmail, details, urgency, docId);
