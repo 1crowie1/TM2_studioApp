@@ -1,5 +1,11 @@
 package com.example.healthfinder.ui.dashboard;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.media.Image;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.healthfinder.R;
 import com.example.healthfinder.entities.Consultation;
@@ -29,7 +37,7 @@ import org.w3c.dom.Text;
 public class DashboardFragment extends Fragment {
 
 
-
+    private static final int LAUNCH = 298 ;
     private TextView activeText;
     private TextView title;
     private TextView emailText;
@@ -41,12 +49,13 @@ public class DashboardFragment extends Fragment {
     private EditText informationValue;
     private EditText specialitiesValue;
     private ImageButton deleteButton;
+    private ImageButton locationButton;
 
     private DatabaseReference mDatabase;
     private DatabaseReference mUser;
     private DatabaseReference mDoctor;
     private DatabaseReference mConsultation;
-    private DatabaseReference mChats;
+
 
     private String uid;
     private String patId;
@@ -76,6 +85,7 @@ public class DashboardFragment extends Fragment {
         informationText = (TextView) view.findViewById(R.id.informationDisplay);
         informationValue = (EditText) view.findViewById(R.id.informationValue);
         deleteButton = (ImageButton) view.findViewById(R.id.deleteButton);
+        locationButton = (ImageButton) view.findViewById(R.id.locationButton);
         title = (TextView) view.findViewById(R.id.titleDisplay);
         specialitiesText = (TextView) view.findViewById(R.id.specialitiesText);
         specialitiesValue = (EditText) view.findViewById(R.id.specialitiesDisplayValue);
@@ -93,6 +103,28 @@ public class DashboardFragment extends Fragment {
         chats = false;
 
         checkDoctor(uid);
+
+        deleteButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.deleteButton:
+                            approveConsultation();
+                        break;
+                }
+            }
+        });
+
+        locationButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.locationButton:
+                        searchMaps(clinic);
+                        break;
+                }
+            }
+        });
 
 
         return view;
@@ -142,7 +174,26 @@ public class DashboardFragment extends Fragment {
     }
 
     private void displayDoctorConsultations(final String uid){
+        mConsultation.orderByChild("docId").equalTo(uid).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    chats=true;
+                    docId = uid;
+                    patId = "";
+                    specialities = "";
+                    for(DataSnapshot child : dataSnapshot.getChildren()){
+                        contactEmail = child.child("patEmail").getValue(String.class);
+                        details = child.child("details").getValue(String.class);
+                    }
 
+                    setName(contactEmail);
+                }else{
+                    chats=false;
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}});
     }
 
     private void setNameClinic(final String docId){
@@ -164,6 +215,24 @@ public class DashboardFragment extends Fragment {
                 contactName = user.username;
                 setInfo();
             }
+            public void onCancelled(@NonNull DatabaseError databaseError) {}});
+    }
+
+    private void setName(String patEmail){
+        mUser.orderByChild("email").equalTo(patEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot){
+                    String tempId = "";
+                    for(DataSnapshot child : dataSnapshot.getChildren()){
+                        tempId = child.getKey();
+                        patId = tempId;
+                        User user = child.getValue(User.class);
+                        contactName = user.username;
+                        setInfo();
+                    }
+
+            }
+            @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}});
     }
 
@@ -194,6 +263,13 @@ public class DashboardFragment extends Fragment {
               deleteButton.setVisibility(View.VISIBLE);
               specialitiesText.setVisibility(View.VISIBLE);
               specialitiesValue.setVisibility(View.VISIBLE);
+              locationButton.setVisibility(View.VISIBLE);
+
+              if(docStatus){
+                  specialitiesValue.setVisibility(View.GONE);
+                  specialitiesText.setVisibility(View.GONE);
+                  locationButton.setVisibility(View.GONE);
+              }
           }
           else{
               activeText.setVisibility(View.VISIBLE);
@@ -208,8 +284,39 @@ public class DashboardFragment extends Fragment {
               deleteButton.setVisibility(View.GONE);
               specialitiesValue.setVisibility(View.GONE);
               specialitiesText.setVisibility(View.GONE);
-              specialitiesValue.setVisibility(View.GONE);
+              locationButton.setVisibility(View.GONE);
           }
+
+    }
+
+    private void approveConsultation(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("    This will delete the consultation request")
+                .setTitle("Approve Consultation")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mConsultation.child(patId).removeValue();
+                        refreshUI();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id){}})
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+
+    }
+    private void refreshUI(){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (Build.VERSION.SDK_INT >= 26) {
+            ft.setReorderingAllowed(false);
+        }
+        ft.detach(this).attach(this).commit();
+    }
+
+    private void searchMaps(String clinicAddress){
+        String map = "http://maps.google.co.in/maps?q=" + clinicAddress;
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
+        startActivity(i);
     }
 
 }
