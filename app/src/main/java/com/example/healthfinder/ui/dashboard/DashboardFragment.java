@@ -305,6 +305,7 @@ public class DashboardFragment extends Fragment {
                 .show();
 
     }
+
     private void refreshUI(){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         if (Build.VERSION.SDK_INT >= 26) {
