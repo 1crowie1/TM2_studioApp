@@ -1,7 +1,6 @@
 package com.example.healthfinder.ui.notifications;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 
 import com.example.healthfinder.R;
@@ -221,17 +219,7 @@ public class NotificationsFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == LAUNCH) {
                 resetUI();
-                refreshUI();
                 Toast.makeText(getActivity(), "Your mail client has handled your request", Toast.LENGTH_SHORT).show();
-
         }
     }//onActivityResult
-
-    private void refreshUI(){
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        if (Build.VERSION.SDK_INT >= 26) {
-            ft.setReorderingAllowed(false);
-        }
-        ft.detach(this).attach(this).commit();
-    }
 }
